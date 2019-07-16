@@ -1,24 +1,36 @@
 package parser;
 
 import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Stack;
 
 public class MyParser
 {
     private Code codeUtil = Code.getInstance();
     private final static int A_COMMAND = 0,C_COMMAND = 1,L_COMMAND = 2; //final static
-    private LinkedList<String> content = new LinkedList<>();
+    private Stack<String> content = new Stack<>();
     public String currentLine;
-    public MyParser(String filePath) throws Exception
+
+    public Stack<String> setSource(String filePath)
     {
-        InputStream is = new FileInputStream(filePath);
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader mBufferedReader = new BufferedReader(isr);
-        String line;
-        while ((line= mBufferedReader.readLine())!=null)
-             if(!line.equals("")&&!line.substring(0,2).equals("//"))
-                content.add(line);
+        try
+        {
+            InputStream is = new FileInputStream(filePath);
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader mBufferedReader = new BufferedReader(isr);
+            String line;
+            while ((line= mBufferedReader.readLine())!=null)
+                if(isCode(line))
+                    content.push(line);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return content;
+    }
+    public boolean isCode(String line)
+    {
+        return (!line.equals("")&&!line.substring(0,2).equals("//"));
     }
     private boolean hasMoreCommands()
     {
@@ -27,7 +39,7 @@ public class MyParser
     public void advance()
     {
         if(hasMoreCommands())
-            currentLine = content.pollFirst();
+            currentLine = content.pop();
         else
             currentLine = null;
     }

@@ -9,8 +9,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import parser.MyParser;
 
-import java.io.File;
+import java.io.*;
+import java.util.Stack;
 
 
 public class Controller
@@ -19,14 +21,36 @@ public class Controller
     public Button btn_file,btn_run,btn_runFast,btn_stop;
     @FXML
     private ListView<String> lv_destination,lv_source;
+    private MyParser parser;
     @FXML
     private void initialize()
     {
-        ObservableList<String> test = FXCollections.observableArrayList("A","B","C");
-        lv_source.setItems(test);
+        parser = new MyParser();
     }
     @FXML
-    public void btnFileClick(MouseEvent mouseEvent)
+    public void btnFileClick()
+    {
+        String filePath = showDialog();
+        Stack<String> content = parser.setSource(filePath);
+        ObservableList<String> contentList = FXCollections.observableArrayList();
+        contentList.addAll(content);
+        lv_source.setItems(contentList);
+    }
+    @FXML
+    public void btnRunClick()
+    {
+        lv_source.getSelectionModel().selectNext();
+    }
+    @FXML
+    public void btnRFClick()
+    {
+    }
+    @FXML
+    public void btnStopClick()
+    {
+
+    }
+    private String showDialog()
     {
         FileChooser fc = new FileChooser();
         fc.setTitle("Open Asm File");
@@ -35,17 +59,8 @@ public class Controller
         );
         Stage stage = new Stage();
         File file = fc.showOpenDialog(stage);
+        return file.getPath();
     }
-    @FXML
-    public void btnRunClick(MouseEvent mouseEvent)
-    {
-    }
-    @FXML
-    public void btnRFClick(MouseEvent mouseEvent)
-    {
-    }
-    @FXML
-    public void btnStopClick(MouseEvent mouseEvent)
-    {
-    }
+
+
 }
