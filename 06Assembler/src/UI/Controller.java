@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import parser.MyParser;
 
 import java.io.*;
+import java.util.LinkedList;
 import java.util.Stack;
 
 
@@ -31,7 +32,7 @@ public class Controller
     public void btnFileClick()
     {
         String filePath = showDialog();
-        Stack<String> content = parser.setSource(filePath);
+        LinkedList<String> content = parser.setSource(filePath);
         ObservableList<String> contentList = FXCollections.observableArrayList();
         contentList.addAll(content);
         lv_source.setItems(contentList);
@@ -39,7 +40,14 @@ public class Controller
     @FXML
     public void btnRunClick()
     {
-        lv_source.getSelectionModel().selectNext();
+        if(lv_destination.getItems().isEmpty())
+            lv_source.getSelectionModel().selectFirst();
+        else
+            lv_source.getSelectionModel().selectNext();
+        String result = parser.getBinary();
+        lv_destination.getItems().add(result);
+
+
     }
     @FXML
     public void btnRFClick()

@@ -1,16 +1,16 @@
 package parser;
 
 import java.io.*;
-import java.util.Stack;
+import java.util.*;
 
 public class MyParser
 {
     private Code codeUtil = Code.getInstance();
     private final static int A_COMMAND = 0,C_COMMAND = 1,L_COMMAND = 2; //final static
-    private Stack<String> content = new Stack<>();
+    private LinkedList<String> content = new LinkedList<>();
     public String currentLine;
 
-    public Stack<String> setSource(String filePath)
+    public LinkedList<String> setSource(String filePath)
     {
         try
         {
@@ -20,7 +20,7 @@ public class MyParser
             String line;
             while ((line= mBufferedReader.readLine())!=null)
                 if(isCode(line))
-                    content.push(line);
+                    content.add(line);
         }
         catch (IOException e)
         {
@@ -39,7 +39,7 @@ public class MyParser
     public void advance()
     {
         if(hasMoreCommands())
-            currentLine = content.pop();
+            currentLine = content.pollFirst();
         else
             currentLine = null;
     }
@@ -83,12 +83,15 @@ public class MyParser
         else
             return "null";
     }
-    public void getBinary()
+    public String getBinary()
     {
         advance();
+        System.out.println(currentLine);
+        String result = "";
         switch (commandType())
         {
             case A_COMMAND:
+                result = codeUtil.address(symbol());
                 System.out.println(codeUtil.address(symbol()));
                 break;
             case L_COMMAND:
@@ -97,8 +100,11 @@ public class MyParser
                 String comp = codeUtil.comp(comp());
                 String dest = codeUtil.dest(dest());
                 String jump = codeUtil.jump(jump());
+                result = comp+dest+jump;
                 System.out.println(comp+dest+jump);
+                break;
         }
 
+        return result;
     }
 }
