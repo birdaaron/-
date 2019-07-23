@@ -1,19 +1,28 @@
 package UI;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import parser.MyParser;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.Stack;
+import java.util.Timer;
 
 
 public class Controller
@@ -23,6 +32,7 @@ public class Controller
     @FXML
     private ListView<String> lv_destination,lv_source;
     private MyParser parser;
+    private Timeline timeline;
     @FXML
     private void initialize()
     {
@@ -46,17 +56,25 @@ public class Controller
             lv_source.getSelectionModel().selectNext();
         String result = parser.getBinary();
         lv_destination.getItems().add(result);
-
-
     }
     @FXML
     public void btnRFClick()
     {
+        if(btn_stop.isDisable())
+            btn_stop.setDisable(false);
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), (ActionEvent event) ->
+        {
+            if(parser.hasMoreCommands())
+                btnRunClick();
+        }));
+        timeline.setCycleCount(parser.contentSize());
+        timeline.play();
     }
     @FXML
     public void btnStopClick()
     {
-
+        btn_stop.setDisable(true);
+        timeline.pause();
     }
     private String showDialog()
     {

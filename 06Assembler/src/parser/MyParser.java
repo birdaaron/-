@@ -32,10 +32,11 @@ public class MyParser
     {
         return (!line.equals("")&&!line.substring(0,2).equals("//"));
     }
-    private boolean hasMoreCommands()
+    public boolean hasMoreCommands()
     {
        return content.size()!=0;
     }
+    public int contentSize(){ return content.size();}
     public void advance()
     {
         if(hasMoreCommands())
