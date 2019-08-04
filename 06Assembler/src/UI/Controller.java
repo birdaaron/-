@@ -31,18 +31,15 @@ public class Controller
     public Button btn_file,btn_run,btn_runFast,btn_stop;
     @FXML
     private ListView<String> lv_destination,lv_source;
-    private MyParser parser;
+    private MyParser parser = new MyParser();
     private Timeline timeline;
-    @FXML
-    private void initialize()
-    {
-        parser = new MyParser();
-    }
     @FXML
     public void btnFileClick()
     {
+        lv_destination.getItems().clear();
         String filePath = showDialog();
         LinkedList<String> content = parser.setSource(filePath);
+
         ObservableList<String> contentList = FXCollections.observableArrayList();
         contentList.addAll(content);
         lv_source.setItems(contentList);

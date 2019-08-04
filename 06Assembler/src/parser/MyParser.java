@@ -5,11 +5,11 @@ import java.util.*;
 
 public class MyParser
 {
-    private Code codeUtil = Code.getInstance();
+    private Code codeUtil = new Code();
     private final static int A_COMMAND = 0,C_COMMAND = 1,L_COMMAND = 2; //final static
     private LinkedList<String> content = new LinkedList<>();
+    private SymbolTable symbolTable;
     public String currentLine;
-
     public LinkedList<String> setSource(String filePath)
     {
         try
@@ -21,6 +21,10 @@ public class MyParser
             while ((line= mBufferedReader.readLine())!=null)
                 if(isCode(line))
                     content.add(line);
+
+            if(hasMoreCommands())
+                initSymbolTable();
+
         }
         catch (IOException e)
         {
@@ -65,16 +69,22 @@ public class MyParser
     }
     public String dest()
     {
-        int position = currentLine.indexOf('=');
-        if(position!=-1)
-            return currentLine.substring(0,position);
+        int position_equal = currentLine.indexOf('=');
+        int position_semicolon = currentLine.indexOf(';');
+        if(position_semicolon!=-1)
+            return currentLine.substring(0,position_semicolon);
+        else if(position_equal!=-1)
+            return currentLine.substring(0,position_equal);
         else
             return "null";
     }
     public String comp()
     {
         int position = currentLine.indexOf('=');
-        return currentLine.substring(position+1);
+        if(position!=-1)
+            return currentLine.substring(position+1);
+        else
+            return "0";
     }
     public String jump()
     {
@@ -84,25 +94,54 @@ public class MyParser
         else
             return "null";
     }
+    private void initSymbolTable()
+    {
+        symbolTable = new SymbolTable();
+        @SuppressWarnings("unchecked")
+        LinkedList<String> contentCopy = (LinkedList<String>)this.content.clone();
+        System.out.println(contentCopy.getFirst());
+        int romAddress = 0;
+        do
+        {
+            advance();
+            if(commandType()==L_COMMAND)
+            {
+                int position = currentLine.indexOf(')');
+                String symbol = currentLine.substring(1,position);
+                String address = Integer.toBinaryString(romAddress);
+                symbolTable.addEntry(symbol,address);
+            }
+            else
+                romAddress++;
+        } while(hasMoreCommands());
+        content = contentCopy;
+
+        currentLine = "";
+    }
+
     public String getBinary()
     {
         advance();
-        System.out.println(currentLine);
         String result = "";
         switch (commandType())
         {
             case A_COMMAND:
-                result = codeUtil.address(symbol());
-                System.out.println(codeUtil.address(symbol()));
-                break;
-            case L_COMMAND:
+                String symbol = currentLine.substring(1);
+                if(symbol.charAt(0)<=57 && symbol.charAt(0)>=48)    //判断是否为数字
+                    result = symbolTable.getDigitRamAddress(symbol);
+                else if(symbolTable.contatins(symbol))
+                    result = symbolTable.getAddress(symbol);
+                else
+                {
+                    symbolTable.addVariable(symbol);
+                    result = symbolTable.getAddress(symbol);
+                }
                 break;
             case C_COMMAND:
                 String comp = codeUtil.comp(comp());
                 String dest = codeUtil.dest(dest());
                 String jump = codeUtil.jump(jump());
                 result = comp+dest+jump;
-                System.out.println(comp+dest+jump);
                 break;
         }
 

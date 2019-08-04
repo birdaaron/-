@@ -5,14 +5,6 @@ import java.util.Map;
 
 public class Code
 {
-    private static class CodeHolder//
-    {
-        private static final Code INSTANCE = new Code();
-    }
-    public static Code getInstance()
-    {
-        return CodeHolder.INSTANCE;
-    }
 
     private Map<String,String> compMap = new HashMap<String, String>()
     {
@@ -80,12 +72,5 @@ public class Code
     {
         return jumpMap.get(symbol);
     }
-    public String address(String symbol)
-    {
-        String result;
-        result = Integer.toBinaryString(Integer.parseInt(symbol.substring(1)));
-        while(result.length()!=16)
-            result = '0'+result;
-        return result;
-    }
+
 }
