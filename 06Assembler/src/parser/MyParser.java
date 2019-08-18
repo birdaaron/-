@@ -6,7 +6,7 @@ import java.util.*;
 public class MyParser
 {
     private Code codeUtil = new Code();
-    private final static int A_COMMAND = 0,C_COMMAND = 1,L_COMMAND = 2; //final static
+    private final static int A_COMMAND = 0,C_COMMAND = 1,L_COMMAND = 2,NO_COMMAND = 3; //final static
     private LinkedList<String> content = new LinkedList<>();
     private SymbolTable symbolTable;
     public String currentLine;
@@ -19,9 +19,9 @@ public class MyParser
             BufferedReader mBufferedReader = new BufferedReader(isr);
             String line;
             while ((line= mBufferedReader.readLine())!=null)
-                if(isCode(line))
-                    content.add(line);
-
+                //if(isCode(line))
+                    content.add(filterLine(line));
+            //第一次编译
             if(hasMoreCommands())
                 initSymbolTable();
 
@@ -29,13 +29,11 @@ public class MyParser
         catch (IOException e)
         {
             e.printStackTrace();
+
         }
         return content;
     }
-    public boolean isCode(String line)
-    {
-        return (!line.equals("")&&!line.substring(0,2).equals("//"));
-    }
+
     public boolean hasMoreCommands()
     {
        return content.size()!=0;
@@ -118,7 +116,25 @@ public class MyParser
 
         currentLine = "";
     }
+    public boolean isCode(String line)
+    {
+        return (!line.equals("")&&!line.substring(0,2).equals("//"));
+    }
+    private String filterLine(String line)
+    {
+        int position_space = 1;
+        int position_note = -1;
 
+        //过滤空格
+        while(line.substring(0,1).equals(" "))
+            line = line.substring(position_space);
+
+        //过滤注释
+        position_note = line.indexOf("//");
+        if(position_note!=-1)
+            line = line.substring(0,position_note);
+        return line;
+    }
     public String getBinary()
     {
         advance();

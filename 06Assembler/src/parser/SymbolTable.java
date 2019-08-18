@@ -34,20 +34,24 @@ public class SymbolTable
             put("R15","0000000000001111");
         }
     };
+    //在符号表中添加一对键值
     public void addEntry(String symbol,String address) { symbolMap.put(symbol,address);}
     public boolean contatins(String symbol){return symbolMap.containsKey(symbol);}
     public String getAddress(String symbol) {return symbolMap.get(symbol);}
+    //获得数字型A指令的二进制地址
     public String getDigitRamAddress(String symbol)
     {
         return toBinaryString(Integer.parseInt(symbol));
     }
-    private String toBinaryString(int address)                       //将int数字转为16位二进制string
+    //将int数字转为16位二进制string
+    private String toBinaryString(int address)
     {
         String result = Integer.toBinaryString(address);
         while(result.length()!=16)
             result = '0'+result;
         return result;
     }
+    //添加变量符号
     public void addVariable(String symbol)
     {
         String address = toBinaryString(variableRamAddress);
