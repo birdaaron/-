@@ -47,12 +47,13 @@ public class Controller
     @FXML
     public void btnRunClick()
     {
-        if(lv_destination.getItems().isEmpty())
+        if(lv_source.getSelectionModel().isEmpty())
             lv_source.getSelectionModel().selectFirst();
         else
             lv_source.getSelectionModel().selectNext();
         String result = parser.getBinary();
-        lv_destination.getItems().add(result);
+        if(!result.equals(""))
+            lv_destination.getItems().add(result);
     }
     @FXML
     public void btnRFClick()

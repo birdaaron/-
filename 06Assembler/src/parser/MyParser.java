@@ -19,8 +19,8 @@ public class MyParser
             BufferedReader mBufferedReader = new BufferedReader(isr);
             String line;
             while ((line= mBufferedReader.readLine())!=null)
-                //if(isCode(line))
-                    content.add(filterLine(line));
+                if(!line.equals(""))
+                    content.add(line);
             //第一次编译
             if(hasMoreCommands())
                 initSymbolTable();
@@ -39,15 +39,17 @@ public class MyParser
        return content.size()!=0;
     }
     public int contentSize(){ return content.size();}
-    public void advance()
+    private void advance()
     {
         if(hasMoreCommands())
-            currentLine = content.pollFirst();
+            currentLine = filterLine(content.pollFirst());
         else
             currentLine = null;
     }
     public int commandType()
     {
+        if(currentLine.equals(""))
+            return NO_COMMAND;
         switch (currentLine.charAt(0))
         {
             case '@':
@@ -68,13 +70,10 @@ public class MyParser
     public String dest()
     {
         int position_equal = currentLine.indexOf('=');
-        int position_semicolon = currentLine.indexOf(';');
-        if(position_semicolon!=-1)
-            return currentLine.substring(0,position_semicolon);
-        else if(position_equal!=-1)
-            return currentLine.substring(0,position_equal);
-        else
+        if(position_equal==-1)
             return "null";
+        else
+            return currentLine.substring(0,position_equal);
     }
     public String comp()
     {
@@ -113,13 +112,12 @@ public class MyParser
                 romAddress++;
         } while(hasMoreCommands());
         content = contentCopy;
-
         currentLine = "";
     }
-    public boolean isCode(String line)
+   /**public boolean isCode(String line)
     {
         return (!line.equals("")&&!line.substring(0,2).equals("//"));
-    }
+    }**/
     private String filterLine(String line)
     {
         int position_space = 1;
