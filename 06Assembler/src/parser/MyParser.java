@@ -96,7 +96,6 @@ public class MyParser
         symbolTable = new SymbolTable();
         @SuppressWarnings("unchecked")
         LinkedList<String> contentCopy = (LinkedList<String>)this.content.clone();
-        System.out.println(contentCopy.getFirst());
         int romAddress = 0;
         do
         {
@@ -105,10 +104,10 @@ public class MyParser
             {
                 int position = currentLine.indexOf(')');
                 String symbol = currentLine.substring(1,position);
-                String address = Integer.toBinaryString(romAddress);
+                String address = symbolTable.toBinaryString(romAddress);
                 symbolTable.addEntry(symbol,address);
             }
-            else
+            else if(commandType()!=NO_COMMAND)
                 romAddress++;
         } while(hasMoreCommands());
         content = contentCopy;

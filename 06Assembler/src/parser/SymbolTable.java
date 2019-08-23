@@ -44,7 +44,7 @@ public class SymbolTable
         return toBinaryString(Integer.parseInt(symbol));
     }
     //将int数字转为16位二进制string
-    private String toBinaryString(int address)
+    public String toBinaryString(int address)
     {
         String result = Integer.toBinaryString(address);
         while(result.length()!=16)
