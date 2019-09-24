@@ -6,31 +6,14 @@ import java.util.Queue;
 public class CodeWriter
 {
     public void setFileName(String fileName){}
+
     public LinkedList<String> writeArithmetic(String command)
     {
         LinkedList<String> result = new LinkedList<>();
         switch (command)
         {
             case "add":
-                result.push("@SP");
-                result.push("A=M-1");
-                result.push("D=M");
-                //pop
-                result.push("@SP");
-                result.push("M=M-1");
-                //add
-                result.push("@SP");
-                result.push("A=M-1");
-                result.push("D=M+D");
-                //pop
-                result.push("@SP");
-                result.push("M=M-1");
-                //pushResult
-                result.push("@SP");
-                result.push("A=M");
-                result.push("M=D");
-                result.push("@SP");
-                result.push("M=M+1");
+                result.addAll(codeAdd());
                 break;
             case "sub":
                 break;
@@ -49,41 +32,73 @@ public class CodeWriter
             case "not":
                 break;
         }
+        return null;
     }
-    public LinkedList<String> writerPushPop(int commandType,String segment,int index)
+    public LinkedList<String> writerPushPop(int commandType,String segment,String index)
     {
         LinkedList<String> result = new LinkedList<>();
-        String indexString = String.valueOf(index);
         switch (commandType)
         {
             case Parser.C_PUSH:
-                if(segment.equals("constant"))
-                {
-                    result.push("@"+indexString);
-                    result.push("D=A");
-                    result.push("@SP");
-                    result.push("A=M");
-                    result.push("M=D");
-                    result.push("@SP");
-                    result.push("M=M+1");
-                }
+                result.addAll(codePush(segment,index));
                 break;
             case Parser.C_POP:
-                if(segment.equals("constant"))
-                {
-                    result.push("@SP");
-                    result.push("M=M-1");
-                }
+                result.addAll(codePop(segment));
                 break;
         }
         return result;
     }
     public void close() {}
-    public static void main(String args[])
+    private LinkedList<String> codePop(String segment)
     {
-        CodeWriter cw = new CodeWriter();
-        LinkedList<String> list = cw.WriterPushPop(Parser.C_PUSH,"constant",7);
-        for(String s : list)
-            System.out.println(s);
+        LinkedList<String> result = new LinkedList<>();
+        result.add("@SP");
+        result.add("M=M-1");
+        switch (segment)
+        {
+
+        }
+        return result;
     }
+    private LinkedList<String> codePush(String segment,String index)
+    {
+        LinkedList<String> result = new LinkedList<>();
+        switch (segment)
+        {
+            case "constant":
+                result.add("@"+index);
+                result.add("D=A");
+                result.add("@SP");
+                result.add("A=M");
+                result.add("M=D");
+                result.add("@SP");
+                result.add("M=M+1");
+                break;
+        }
+        return result;
+    }
+    private LinkedList<String> codeAdd()
+    {
+        LinkedList<String> result = new LinkedList<>();
+        //get first num
+        result.add("@SP");
+        result.add("A=M-1");
+        result.add("D=M");
+        //pop
+        result.addAll(codePop("NO_SEGMENT"));
+        //get second num
+        result.add("@SP");
+        result.add("A=M-1");
+        result.add("D=M+D");
+        //pop
+        result.addAll(codePop("NO_SEGMENT"));
+        //pushResult
+        result.add("@SP");
+        result.add("A=M");
+        result.add("M=D");
+        result.add("@SP");
+        result.add("M=M+1");
+        return result;
+    }
+
 }

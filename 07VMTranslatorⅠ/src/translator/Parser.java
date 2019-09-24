@@ -9,6 +9,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class Parser
 {
     private LinkedList<String> content = new LinkedList<>();
+    private CodeWriter codeWriter = new CodeWriter();
     private String currentLine;
     public static final int C_ARITHMETIC = 0,C_PUSH = 1,C_POP = 2,C_LABEL = 3,C_GOTO = 4,
                       C_IF = 5,C_FUNCTION = 6,C_RETURN = 7,C_CALL = 8;
@@ -44,7 +45,7 @@ public class Parser
     }
     public int commandType()
     {
-        switch(currentLine.substring(0,2))
+        switch(currentLine.substring(0,2)) //改
         {
             case "pu":
                 return C_PUSH;
@@ -96,6 +97,12 @@ public class Parser
         arg2 = arg2.substring(0,position_space);
         return arg2;
     }
+    public String arg3()
+    {
+        String arg3 = currentLine.replace(arg1(),"");
+        arg3 = filterLine(arg3.replace(arg2(),""));
+        return arg3;
+    }
     private String filterLine(String line)
     {
         int position_space = 1;
@@ -109,8 +116,22 @@ public class Parser
             line = line.substring(0,position_note);
         return line;
     }
-    public String getCode()
+    public void getCode()
     {
-        return null;
+        advance();
+        switch (commandType())
+        {
+            case C_PUSH:
+                codeWriter.writerPushPop(C_PUSH,arg2(),"1");
+        }
+    }
+    public static void main(String args[])
+    {
+        Parser parser = new Parser();
+        parser.currentLine = "push constant 7";
+        String a = parser.arg1();
+        String b = parser.arg2();
+
+        System.out.println(parser.arg3());
     }
 }
