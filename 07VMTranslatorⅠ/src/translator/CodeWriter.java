@@ -32,7 +32,7 @@ public class CodeWriter
             case "not":
                 break;
         }
-        return null;
+        return result;
     }
     public LinkedList<String> writerPushPop(int commandType,String segment,String index)
     {

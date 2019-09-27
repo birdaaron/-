@@ -113,10 +113,6 @@ public class MyParser
         content = contentCopy;
         currentLine = "";
     }
-   /**public boolean isCode(String line)
-    {
-        return (!line.equals("")&&!line.substring(0,2).equals("//"));
-    }**/
     private String filterLine(String line)
     {
         int position_space = 1;

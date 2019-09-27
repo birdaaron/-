@@ -7,7 +7,12 @@
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MyParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MyParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../07VMTranslatorⅠ/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../07VMTranslatorⅠ/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../07VMTranslatorⅠ/out/production/07VMTranslatorⅠ/translator/CodeWriter.class" beforeDir="false" afterPath="$PROJECT_DIR$/../07VMTranslatorⅠ/out/production/07VMTranslatorⅠ/translator/CodeWriter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../07VMTranslatorⅠ/out/production/07VMTranslatorⅠ/translator/Parser.class" beforeDir="false" afterPath="$PROJECT_DIR$/../07VMTranslatorⅠ/out/production/07VMTranslatorⅠ/translator/Parser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../07VMTranslatorⅠ/src/translator/CodeWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../07VMTranslatorⅠ/src/translator/CodeWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../07VMTranslatorⅠ/src/translator/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../07VMTranslatorⅠ/src/translator/Parser.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -67,8 +72,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/parser/MyParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1054">
-              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+            <state relative-caret-position="-925">
+              <caret line="114" column="5" selection-start-line="114" selection-start-column="5" selection-end-line="114" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1047#1048#0" expanded="true" />
@@ -131,9 +136,9 @@
     </treeState>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
-  <component name="ProjectFrameBounds">
-    <option name="x" value="103" />
-    <option name="y" value="197" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="101" />
+    <option name="y" value="195" />
     <option name="width" value="1615" />
     <option name="height" value="880" />
   </component>
@@ -146,6 +151,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -181,7 +187,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -193,7 +198,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1568904141444" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1569463466401" />
     <property name="dynamic.classpath" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../07VMTranslatorⅠ" />
     <property name="project.structure.last.edited" value="Project" />
@@ -353,10 +358,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="83" y="158" width="1292" height="704" extended-state="0" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.08995138" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.06300268" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" />
       <window_info id="Designer" order="3" />
@@ -454,12 +459,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UI/sample.fxml">
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="354">
           <caret line="17" column="102" selection-start-line="17" selection-start-column="102" selection-end-line="17" selection-end-column="102" />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/parser/Code.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -560,8 +565,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/parser/MyParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1054">
-          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        <state relative-caret-position="-925">
+          <caret line="114" column="5" selection-start-line="114" selection-start-column="5" selection-end-line="114" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1047#1048#0" expanded="true" />

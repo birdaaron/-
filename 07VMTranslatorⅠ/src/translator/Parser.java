@@ -11,11 +11,10 @@ public class Parser
     private LinkedList<String> content = new LinkedList<>();
     private CodeWriter codeWriter = new CodeWriter();
     private String currentLine;
-    public static final int C_ARITHMETIC = 0,C_PUSH = 1,C_POP = 2,C_LABEL = 3,C_GOTO = 4,
+    public static final int NO_COMMAND = -1,C_ARITHMETIC = 0,C_PUSH = 1,C_POP = 2,C_LABEL = 3,C_GOTO = 4,
                       C_IF = 5,C_FUNCTION = 6,C_RETURN = 7,C_CALL = 8;
-    public Parser()
+    public Parser(String filePath)
     {
-        String filePath = "";
         try
         {
             InputStream is = new FileInputStream(filePath);
@@ -23,7 +22,7 @@ public class Parser
             BufferedReader br = new BufferedReader(isr);
             String line;
             while((line = br.readLine())!=null)
-                if(line!="")
+                if(!line.equals(""))
                     content.add(line);
         }
         catch (IOException e)
@@ -45,6 +44,8 @@ public class Parser
     }
     public int commandType()
     {
+        if(currentLine.equals(""))
+            return NO_COMMAND;
         switch(currentLine.substring(0,2)) //改
         {
             case "pu":
@@ -107,6 +108,8 @@ public class Parser
     {
         int position_space = 1;
         int position_note = -1;
+        if(line.length()==0)
+            System.out.println("lalal");
         //过滤空格
         while(line.substring(0,1).equals(" "))
             line = line.substring(position_space);
@@ -116,22 +119,66 @@ public class Parser
             line = line.substring(0,position_note);
         return line;
     }
-    public void getCode()
+    public LinkedList<String> getCode()
     {
-        advance();
-        switch (commandType())
+        LinkedList<String> code = new LinkedList<>();
+        while(hasMoreCommands())
         {
-            case C_PUSH:
-                codeWriter.writerPushPop(C_PUSH,arg2(),"1");
+            advance();
+            switch (commandType())
+            {
+                case C_PUSH:
+                    code.addAll(codeWriter.writerPushPop(C_PUSH,arg2(),arg3()));
+                    break;
+                case C_POP:
+                    code.addAll(codeWriter.writerPushPop(C_POP,arg2(),arg3()));
+                    break;
+                case C_ARITHMETIC:
+                    code.addAll(codeWriter.writeArithmetic(currentLine));
+                    break;
+            }
+        }
+        return code;
+    }
+    public void createAsmFile(String filePath,String fileName)
+    {
+        try
+        {
+           File asmFile = new File(filePath+fileName+".asm");
+           if(!asmFile.exists())
+           {
+               asmFile.createNewFile();
+               writeAsmContent(asmFile,getCode());
+           }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    private void writeAsmContent(File file,LinkedList<String> content)
+    {
+        FileOutputStream fos = null;
+        PrintWriter pw = null;
+        try
+        {
+            StringBuffer sb = new StringBuffer();
+            for(String code : content)
+                sb.append(code+"\r\n");
+            fos = new FileOutputStream(file);
+            pw = new PrintWriter(fos);
+            pw.write(sb.toString().toCharArray());
+            pw.flush();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
     public static void main(String args[])
     {
-        Parser parser = new Parser();
-        parser.currentLine = "push constant 7";
-        String a = parser.arg1();
-        String b = parser.arg2();
+        Parser parser = new Parser("C:\\Users\\大鸟先飞\\Desktop\\SimpleAdd.vm");
+        parser.createAsmFile("C:\\Users\\大鸟先飞\\Desktop\\","SimpleAdd");
 
-        System.out.println(parser.arg3());
     }
 }
