@@ -2,9 +2,6 @@ package translator;
 
 import java.io.*;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 
 public class Parser
 {
@@ -69,7 +66,7 @@ public class Parser
         }
 
     }
-    public String arg1()
+    public String commandStr()
     {
         switch(commandType())
         {
@@ -91,17 +88,17 @@ public class Parser
                 return currentLine;
         }
     }
-    public String arg2()
+    public String arg1()
     {
         String arg2 = filterLine(currentLine.substring(currentLine.indexOf(" ")));
         int position_space = arg2.indexOf(" ");
         arg2 = arg2.substring(0,position_space);
         return arg2;
     }
-    public String arg3()
+    public String arg2()
     {
-        String arg3 = currentLine.replace(arg1(),"");
-        arg3 = filterLine(arg3.replace(arg2(),""));
+        String arg3 = currentLine.replace(commandStr(),"");
+        arg3 = filterLine(arg3.replace(arg1(),""));
         return arg3;
     }
     private String filterLine(String line)
@@ -128,10 +125,10 @@ public class Parser
             switch (commandType())
             {
                 case C_PUSH:
-                    code.addAll(codeWriter.writerPushPop(C_PUSH,arg2(),arg3()));
+                    code.addAll(codeWriter.writerPushPop(C_PUSH, arg1(), arg2()));
                     break;
                 case C_POP:
-                    code.addAll(codeWriter.writerPushPop(C_POP,arg2(),arg3()));
+                    code.addAll(codeWriter.writerPushPop(C_POP, arg1(), arg2()));
                     break;
                 case C_ARITHMETIC:
                     code.addAll(codeWriter.writeArithmetic(currentLine));
