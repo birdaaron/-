@@ -1,11 +1,14 @@
 package translator;
 
+import translator.codeMod.ArithMod;
+import translator.codeMod.RamMod;
+
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class CodeWriter
 {
-    private CodeMod code = new CodeMod();
+    private RamMod ramCode = new RamMod();
+    private ArithMod arithMod = new ArithMod();
     public void setFileName(String fileName){}
 
     public LinkedList<String> writeArithmetic(String command)
@@ -14,26 +17,31 @@ public class CodeWriter
         switch (command)
         {
             case "add":
-                result.addAll(code.codeAdd());
+                result.addAll(arithMod.codeAdd());
                 break;
             case "sub":
-                result.addAll(code.codeSub());
+                result.addAll(arithMod.codeSub());
                 break;
             case "neg":
-                result.addAll(code.codeNeg());
+                result.addAll(arithMod.codeNeg());
                 break;
             case "eq":
-                result.addAll(code.codeEq());
+                result.addAll(arithMod.codeEq());
                 break;
             case "gt":
+                result.addAll(arithMod.codeGt());
                 break;
             case "lt":
+                result.addAll(arithMod.codeLt());
                 break;
             case "and":
+                result.addAll(arithMod.codeAnd());
                 break;
             case "or":
+                result.addAll(arithMod.codeOr());
                 break;
             case "not":
+                result.addAll(arithMod.codeNot());
                 break;
         }
         return result;
@@ -44,10 +52,10 @@ public class CodeWriter
         switch (commandType)
         {
             case Parser.C_PUSH:
-                result.addAll(code.codePush(segment,index));
+                result.addAll(ramCode.codePush(segment,index));
                 break;
             case Parser.C_POP:
-                result.addAll(code.codePop(segment));
+                result.addAll(ramCode.codePop(segment,index));
                 break;
         }
         return result;

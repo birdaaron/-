@@ -174,8 +174,11 @@ public class Parser
     }
     public static void main(String args[])
     {
-        Parser parser = new Parser("C:\\Users\\大鸟先飞\\Desktop\\SimpleAdd.vm");
-        parser.createAsmFile("C:\\Users\\大鸟先飞\\Desktop\\","SimpleAdd");
+
+        Parser parser = new Parser(
+                "C:\\Users\\大鸟先飞\\Desktop\\MemoryAccess\\BasicTest\\BasicTest.vm");
+        parser.createAsmFile(
+                "C:\\Users\\大鸟先飞\\Desktop\\MemoryAccess\\BasicTest\\","BasicTest");
 
     }
 }
