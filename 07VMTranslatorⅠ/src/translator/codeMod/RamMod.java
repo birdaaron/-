@@ -4,23 +4,78 @@ import java.util.LinkedList;
 
 public class RamMod
 {
+    private String fileName = null;
+
+    public void setFileName(String fileName)
+    {
+        this.fileName = fileName;
+    }
+
     public LinkedList<String> codePop(String segment,String index)
     {
         LinkedList<String> result = null;
         String address = getSegmentAddress(segment);
         if(segment.equals("static"))
-            result = popWithStatic(address,index);
+            result = popWithStatic(index);
         else
             result = popWithoutStatic(address,index);
         return result;
     }
-    private LinkedList<String> popWithStatic(String address,String index)
-    {return null ;}
+
+    public LinkedList<String> codePush(String segment,String index)
+    {
+        LinkedList<String> result ;
+        String address = getSegmentAddress(segment);
+        if(segment.equals("static"))
+            result = pushWithStatic(index);
+        else if(segment.equals("constant"))
+            result = pushConstantValue(index);
+        else
+            result = pushWithoutStatic(segment,index,address);
+        return result;
+    }
+
+    private String getSegmentAddress(String segment)
+    {
+        switch (segment)
+        {
+
+            case "local":
+                return "@LCL";
+            case "argument":
+                return "@ARG";
+            case "this":
+                return "@THIS";
+            case "that":
+                return "@THAT";
+            case "pointer":
+                return "3";
+            case "temp":
+                return "5";
+        }
+        return "ERROR_ADDRESS";
+    }
+
+    private LinkedList<String> popWithStatic(String index)
+    {
+        LinkedList<String> result = new LinkedList<>();
+        //get the value
+        result.addAll(popStack());
+        result.add("A=M");
+        result.add("D=M");
+        //get the location
+        result.add("@"+fileName+"."+index);
+        //save the value
+        result.add("M=D");
+        return result;
+    }
+
     private LinkedList<String> popWithoutStatic(String address,String index)
     {
         LinkedList<String> result = new LinkedList<>();
         //get the location
         result.add(address);
+
         if(address.equals("5"))//temp
             result.add("D=A");
         else
@@ -39,6 +94,7 @@ public class RamMod
         result.add("M=D");
         return result;
     }
+
     protected LinkedList<String> popStack()
     {
         LinkedList<String> result = new LinkedList<>();
@@ -46,40 +102,32 @@ public class RamMod
         result.add("M=M-1");
         return result;
     }
-
-    public LinkedList<String> codePush(String segment,String index)
+    private LinkedList<String> pushConstantValue(String index)
     {
-        LinkedList<String> result ;
-        String address = getSegmentAddress(segment);
-        if(segment.equals("static"))
-            result = pushWithStatic(segment,index,address);
-        else
-            result = pushWithoutStatic(segment,index,address);
+        LinkedList<String> result = new LinkedList<>();
+        //get the value
+        result.add("@"+index);
+        result.add("D=A");
+        //get the location
+        result.addAll(pushStack());
+        result.add("A=M-1");
+        //save the value
+        result.add("M=D");
         return result;
     }
-
-
-    private String getSegmentAddress(String segment)
+    private LinkedList<String> pushWithStatic(String index)
     {
-        switch (segment)
-        {
-            case "local":
-                return "@LCL";
-            case "argument":
-                return "@ARG";
-            case "this":
-                return "@THIS";
-            case "that":
-                return "@THAT";
-            case "pointer":
-                return "3";
-            case "temp":
-                return "5";
-        }
-        return "ERROR_ADDRESS";
+        LinkedList<String> result = new LinkedList<>();
+        //get the value
+        result.add("@"+fileName+"."+index);
+        result.add("D=M");
+        //get the location
+        result.addAll(pushStack());
+        result.add("A=M-1");
+        //save the value
+        result.add("M=D");
+        return result;
     }
-    private LinkedList<String> pushWithStatic(String index,String segment,String address)
-    {return  null;}
     private LinkedList<String> pushWithoutStatic(String index,String segment,String address)
     {
         LinkedList<String> result = new LinkedList<>();
@@ -99,6 +147,7 @@ public class RamMod
         result.add("M=D");
         return result;
     }
+
     protected LinkedList<String> pushStack()
     {
         LinkedList<String> result = new LinkedList<>();

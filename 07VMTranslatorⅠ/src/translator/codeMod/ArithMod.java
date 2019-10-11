@@ -5,6 +5,7 @@ import java.util.LinkedList;
 public class ArithMod
 {
     private RamMod ramCode = new RamMod();
+
     public LinkedList<String> codeAdd()
     {
         LinkedList<String> result = new LinkedList<>();
@@ -28,6 +29,7 @@ public class ArithMod
         result.add("M=M+1");
         return result;
     }
+
     public LinkedList<String> codeSub()
     {
         LinkedList<String> result = new LinkedList<>();
@@ -51,6 +53,7 @@ public class ArithMod
         result.add("M=M+1");
         return result;
     }
+
     public LinkedList<String> codeNeg()
     {
         LinkedList<String> result = new LinkedList<>();
@@ -60,6 +63,7 @@ public class ArithMod
         result.add("M=-M");
         return result;
     }
+
     public LinkedList<String> codeEq()
     {
         LinkedList<String> result = new LinkedList<>();
@@ -89,6 +93,7 @@ public class ArithMod
         result.add("M=D");
         return result;
     }
+
     public LinkedList<String> codeGt()
     {
         LinkedList<String> result = new LinkedList<>();
@@ -118,6 +123,7 @@ public class ArithMod
         result.add("M=D");
         return result;
     }
+
     public LinkedList<String> codeLt()
     {
         LinkedList<String> result = new LinkedList<>();
@@ -147,6 +153,7 @@ public class ArithMod
         result.add("M=D");
         return result;
     }
+
     public LinkedList<String> codeAnd()
     {
         LinkedList<String> result = new LinkedList<>();
@@ -170,6 +177,7 @@ public class ArithMod
         result.add("M=M+1");
         return result;
     }
+
     public LinkedList<String> codeOr()
     {
         LinkedList<String> result = new LinkedList<>();
@@ -193,6 +201,7 @@ public class ArithMod
         result.add("M=M+1");
         return result;
     }
+
     public LinkedList<String> codeNot()
     {
         LinkedList<String> result = new LinkedList<>();

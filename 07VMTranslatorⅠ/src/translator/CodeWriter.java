@@ -3,14 +3,19 @@ package translator;
 import translator.codeMod.ArithMod;
 import translator.codeMod.RamMod;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 
 public class CodeWriter
 {
     private RamMod ramCode = new RamMod();
     private ArithMod arithMod = new ArithMod();
-    public void setFileName(String fileName){}
-
+    public CodeWriter(String fileName)
+    {
+        ramCode.setFileName(fileName);
+    }
     public LinkedList<String> writeArithmetic(String command)
     {
         LinkedList<String> result = new LinkedList<>();

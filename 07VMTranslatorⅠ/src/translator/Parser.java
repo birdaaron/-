@@ -6,15 +6,16 @@ import java.util.LinkedList;
 public class Parser
 {
     private LinkedList<String> content = new LinkedList<>();
-    private CodeWriter codeWriter = new CodeWriter();
     private String currentLine;
+    private File vmFile;
     public static final int NO_COMMAND = -1,C_ARITHMETIC = 0,C_PUSH = 1,C_POP = 2,C_LABEL = 3,C_GOTO = 4,
                       C_IF = 5,C_FUNCTION = 6,C_RETURN = 7,C_CALL = 8;
-    public Parser(String filePath)
+    public Parser(File vmFile)
     {
+        this.vmFile = vmFile;
         try
         {
-            InputStream is = new FileInputStream(filePath);
+            InputStream is = new FileInputStream(vmFile.getPath());
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
             String line;
@@ -116,9 +117,10 @@ public class Parser
             line = line.substring(0,position_note);
         return line;
     }
-    public LinkedList<String> getCode()
+    public LinkedList<String> generateCode()
     {
         LinkedList<String> code = new LinkedList<>();
+        CodeWriter codeWriter = new CodeWriter(vmFile.getName().replace(".vm",""));
         while(hasMoreCommands())
         {
             advance();
@@ -137,21 +139,28 @@ public class Parser
         }
         return code;
     }
-    public void createAsmFile(String filePath,String fileName)
+
+    public boolean createAsmFile()
     {
         try
         {
-           File asmFile = new File(filePath+fileName+".asm");
-           if(!asmFile.exists())
-           {
-               asmFile.createNewFile();
-               writeAsmContent(asmFile,getCode());
-           }
+            String filePath = vmFile.getPath().replace(vmFile.getName(),"");
+            String fileName = vmFile.getName().replace("vm","asm");
+            File asmFile = new File(filePath+fileName);
+
+            if(!asmFile.exists())
+            {
+                asmFile.createNewFile();
+                writeAsmContent(asmFile,generateCode());
+            }
+            else
+                return false;
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+        return true;
     }
     private void writeAsmContent(File file,LinkedList<String> content)
     {
@@ -171,14 +180,5 @@ public class Parser
         {
             e.printStackTrace();
         }
-    }
-    public static void main(String args[])
-    {
-
-        Parser parser = new Parser(
-                "C:\\Users\\大鸟先飞\\Desktop\\MemoryAccess\\BasicTest\\BasicTest.vm");
-        parser.createAsmFile(
-                "C:\\Users\\大鸟先飞\\Desktop\\MemoryAccess\\BasicTest\\","BasicTest");
-
     }
 }
